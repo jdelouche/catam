@@ -14,17 +14,17 @@ deconstruction ::            Fix (ConnectorF) -> Carrier
 construction   :: Carrier -> Fix (ConnectorF)
 deconstruction = cata send
 construction   = ana receive
-send (StreamF (e,Nothing) (x,p)) = ([],p)
-send (StreamF (e,Just i)  (x,p)) = ([],i:p)
-send (NilF)                      = ([],[])
+send (StreamF Nothing   (x,p)) = ([],p)
+send (StreamF (Just i)  (x,p)) = ([],i:p)
+send (NilF)                    = ([],[])
 send ::               InterfaceF -> Carrier
 receive :: Carrier -> InterfaceF
 receive ([],_)  = NilF
-receive (('e':'1':ns),a) = StreamF ('x',Just 48) (ns,[])
-receive (('e':'2':ns),a) = StreamF ('x',Just 49) (ns,[])
-receive ((p : ns),a)     = StreamF ('_',Nothing) (ns,[])
+receive (('e':'1':ns),a) = StreamF (Just 48) (ns,[])
+receive (('e':'2':ns),a) = StreamF (Just 49) (ns,[])
+receive ((p : ns),a)     = StreamF (Nothing) (ns,[])
 type Carrier    = ([Char],[Int])
-type Transfer   = (Char,Maybe Int)
+type Transfer   = Maybe Int
 type ConnectorF = StreamF Transfer
 type InterfaceF = ConnectorF Carrier
 main = do print $ (deconstruction . construction) ("e1 e2",[])
