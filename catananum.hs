@@ -10,9 +10,9 @@ cata alg  = alg . fmap (cata alg) . unFix;
 ana  :: Functor f => (a -> f a) -> a -> Fix f
 ana coalg = Fix . fmap (ana coalg) . coalg
 data StreamF e a = NilF | StreamF e a deriving (Functor,Show)
-ouput   ::            Fix (ConnectorF) -> Carrier
+output  ::            Fix (ConnectorF) -> Carrier
 input   :: Carrier -> Fix (ConnectorF)
-ouput   = cata send
+output  = cata send
 input   = ana receive
 send   (StreamF Nothing   (Right p))  = (Right p)
 send   (StreamF (Just i)  (Right p))  = (Right (i:p))
@@ -29,4 +29,5 @@ type Carrier    = Either Sender Receiver
 type Transfer   = Maybe Int
 type ConnectorF = StreamF Transfer
 type InterfaceF = ConnectorF Carrier
-main = do print $ (ouput . input) (Left "h1 e2")
+read = (output . input)
+main = do print $ read (Left "h1 e2")
