@@ -16,7 +16,7 @@ type Carrier    = Either Sender Receiver
 type Transfer   = Maybe Int
 type ConnectorF = ChannelF Transfer
 type InterfaceF = ConnectorF Carrier
-read = (output . input)
+ampli = (output . input)
 output  ::            Fix (ConnectorF) -> Carrier
 input   :: Carrier -> Fix (ConnectorF)
 output  = cata send
@@ -30,4 +30,4 @@ receive (Left [])           = NilF
 receive (Left ('e':'1':ns)) = ChannelF (Just 48) (Left ns)
 receive (Left ('e':'2':ns)) = ChannelF (Just 49) (Left ns)
 receive (Left (p : ns))     = ChannelF (Nothing) (Left ns)
-main = do print $ HyloM.read (Left "h1 e2")
+main = do print $ ampli (Left "h1 e2")
