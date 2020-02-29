@@ -20,4 +20,4 @@ erat :: [Int] -> StreamF Int [Int]
 erat (p : ns) = StreamF p (filter (notdiv p) ns)
 evalps :: [Int] -> Fix (StreamF Int)
 evalps = ana erat
-main = do print $ (toListC . evalps) [2..]
+main = do print $ (toListC . evalps) [2..1000]

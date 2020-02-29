@@ -21,6 +21,8 @@ output  ::            Fix (ConnectorF) -> Carrier
 input   :: Carrier -> Fix (ConnectorF)
 output  = cata send
 input   = ana receive
+type Receiver = [Int]
+type Sender   = [Char]
 send::               InterfaceF -> Carrier
 receive:: Carrier -> InterfaceF
 send   (ChannelF Nothing   (Right p))  = (Right p)
