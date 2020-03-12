@@ -2,11 +2,12 @@
 import Prelude
 import Data.Typeable
 data Fix f = Fx (f (Fix f))
+unFix :: Fix f -> f (Fix f) 
 unFix (Fx f) = f
 ana :: ([Int]->StreamF Int [Int]) -> ([Int] -> Fix (StreamF Int))
-ana coalg = Fx . (fmap (ana coalg)) . coalg
+ana coalgF = Fx   . (fmap (ana coalgF)) . coalgF
 cata :: ((StreamF Int [Int])->[Int]) -> (Fix (StreamF Int) -> [Int])
-cata alg  = alg . (fmap (cata  alg)) . unFix
+cata algF  = algF . (fmap (cata  algF)) . unFix
 data StreamF e a = NilF | StreamF e a deriving (Functor,Show)
 coalg :: [Int]->StreamF Int [Int]
 coalg []          =  NilF
@@ -14,6 +15,7 @@ coalg (p : ns)    =  StreamF p ns
 alg   :: StreamF Int [Int]->[Int]
 alg NilF = []
 alg (StreamF e a)  = e:a
+main :: IO ()
 main      = do let a = [1..10]
                putStr          "                                                                    a : "
                print                                                                                a
