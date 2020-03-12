@@ -12,11 +12,12 @@ data StreamF e a = NilF | StreamF e a deriving (Functor,Show)
 coalg :: [Int]->StreamF Int [Int]
 coalg []          =  NilF
 coalg (p : ns)    =  StreamF p ns
+-- coalg (p : ns)    =  StreamF p (filter (notdiv p) ns) where notdiv p n = n `mod` p /= 0
 alg   :: StreamF Int [Int]->[Int]
 alg NilF = []
 alg (StreamF e a)  = e:a
 main :: IO ()
-main      = do let a = [1..10]
+main      = do let a = [2..10]
                putStr          "                                                                    a : "
                print                                                                                a
                putStr          "                                                                coalg : "
