@@ -1,4 +1,5 @@
 {-# LANGUAGE DeriveFunctor #-}
+--  https://bartoszmilewski.com/2017/02/28/f-algebras/
 import Prelude
 import Data.Typeable
 data Fix f = Fx (f (Fix f))
